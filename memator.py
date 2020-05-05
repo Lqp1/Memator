@@ -15,8 +15,8 @@ class RedditWrapper:
                 username=self.config['reddit_user'])        
         self.reddit.read_only = True
 
-    def get(self):
-        return [p for p in self.reddit.multireddit(self.config['reddit_user'], self.config['reddit_multi']).new(limit = 100)]
+    def get(self, count=100):
+        return [p for p in self.reddit.multireddit(self.config['reddit_user'], self.config['reddit_multi']).new(limit = count)]
 
 class Memator(discord.Client):
     def __init__(self, *args, **kwargs):
@@ -50,8 +50,14 @@ class Memator(discord.Client):
             cur_time = time.strftime('%H:%M', time.localtime())
             for s in schedule:
                 if s['time'] == cur_time:
-                    p = random.choice(self.reddit.get())
-                    await self.get_channel(cid).send(f"{s['message']}\n{p.url}")
+                    print(f'Match: {s}')
+                    if 'count' in s:
+                        count = s['count']
+                    else:
+                        count = 1
+                    posts = random.choices(self.reddit.get(), k = count)
+                    memes = ' '.join([post.url for post in posts])
+                    await self.get_channel(cid).send(f"{s['message']}\n{memes}")
             await asyncio.sleep(60)
 
     async def on_ready(self):
@@ -65,14 +71,19 @@ class Memator(discord.Client):
         if message.author == self.user:
             return
     
-        if message.content != 'memes':
+        if not message.content.startswith('memes'):
             return
 
-        p = random.choice(self.reddit.get())
+        tokens = message.content.split(' ')
+        if len(tokens) > 1:
+            count = int(tokens[1])
+        else:
+            count = 1
+        posts = random.choices(self.reddit.get(), k = count)
         cid = await self.get_posts_channel()
         if message.channel.id != cid:
             await message.channel.send(f"Your meme is in #{self.config['discord_channel']}! 💯")
-        await self.get_channel(cid).send(p.url)
+        await self.get_channel(cid).send(' '.join([post.url for post in posts]))
 
 client = Memator()
 client.auth_and_run()
