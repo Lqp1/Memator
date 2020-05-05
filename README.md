@@ -7,9 +7,10 @@
 6. Run it: `python memator.py`
 
 # To be improved
-- [ ] OOP
+- [x] OOP
 - [ ] Error catching
 - [ ] Add slack output
 - [ ] Add local output
 - [ ] Add more input feeds
-- [ ] Add auto send memes at fixed hour
+- [x] Add auto send memes at fixed hour
+- [ ] Filter to get only images links
