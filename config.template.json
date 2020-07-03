@@ -10,5 +10,5 @@
     "schedule": [{"message": "Good morning beautiful! 🥰 🥐", "time": "08:30", "count": 5},
                  {"message": "Lunch break... Eat some memes, good for the health 🥘", "time": "12:00", "count": 5},
                  {"message": "Tea time my dear 🧐 🍵", "time": "16:30"},
-                 {"message": "Have a break, you deserve memes for all that work you've done today! 🥵", "time": "18:00", "count": 5}]
+                 {"message": "Have a break, you deserve memes for all that work you've done today! 🥵", "time": "18:00", "count": 5, "weekday": 1}]
 }

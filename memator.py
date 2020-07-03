@@ -4,6 +4,7 @@ import praw
 import random
 import json
 import asyncio
+from datetime import datetime
 
 class RedditWrapper:
     def __init__(self, config):
@@ -47,9 +48,12 @@ class Memator(discord.Client):
         schedule = self.config['schedule']
         cid = await self.get_posts_channel()
         while not self.is_closed():
+            weekday = datetime.now().isoweekday() <= 5
             cur_time = time.strftime('%H:%M', time.localtime())
             for s in schedule:
                 if s['time'] == cur_time:
+                    if 'weekday' in s and s['weekday'] == 1 and weekday == 0:
+                        continue
                     print(f'Match: {s}')
                     if 'count' in s:
                         count = s['count']
